@@ -1,15 +1,26 @@
 pipeline {
     agent any
-    
+    tools { 
+        maven 'Maven 3.8.4' 
+        jdk 'jdk8' 
+    }
     stages {
         stage('Hello') {
             steps {
                 echo 'Hello World'
             }
         }
+        stage ('Initialize') {
+            steps {
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                ''' 
+            }
         stage('Build') {
-            def mvnHome = tool name: 'Apache Maven 3.6.0', type: 'maven'
-            sh "${mvnHome}/bin/mvn -B -DskipTests clean package"
+            steps {
+                sh 'mvn -Dmaven.test.failure.ignore=true install' 
+            }
         }
         stage('Test') {
             steps {
