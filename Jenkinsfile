@@ -1,15 +1,18 @@
 pipeline {
     agent any
+    tootls{
+        maven '3.8.4'
+    }
       stages {
         stage('Hello') {
             steps {
                 echo 'Hello World'
             }
         }
-        
         stage('Build') {
             steps {
-                sh 'mvn -s clean install -DskipTests=true' 
+                sh 'mvn -version' 
+                sh 'mvn clean install'
             }
         }
         stage('Test') {
